@@ -7,18 +7,6 @@ describe('Hutber Rose', function () {
     roseItems = []
   })
 
-  it('should return the same items we put in', function () {
-    roseItems.push(new Item('+5 Dexterity Vest', 10, 20))
-    roseItems.push(new Item('Aged Brie', 2, 0))
-
-    const desired = update_quality(roseItems)
-    const expected = [{ name: '+5 Dexterity Vest' }, { name: 'Aged Brie' }]
-
-    desired.forEach((item, index) => {
-      expect(expected[index].name).toBe(item.name)
-    })
-  })
-
   it('should lower sell_in and quality by 1 each day for "standard" items', function () {
     roseItems.push(new Item('+5 Dexterity Vest', 10, 20))
     const expected = [
@@ -118,7 +106,7 @@ describe('Hutber Rose', function () {
   })
 
   it('Conjured | degrade twice as fast as normal items', function () {
-    const name = 'Conjured magic staff'
+    const name = 'Conjured Mana Cake'
     roseItems.push(new Item(name, 5, 12))
 
     const expected = [

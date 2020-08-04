@@ -9,7 +9,7 @@
 
 <script type="text/javascript">
   $( document ).ready(function() {
-
+    var items = []
     $('body').append('<p>Starting Gilded Rose</p>');
 
     items.push(new Item('+5 Dexterity Vest', 10, 20));
@@ -17,7 +17,7 @@
     items.push(new Item('Elixir of the Mongoose', 5, 7));
     items.push(new Item('Sulfuras, Hand of Ragnaros', 0, 80));
     items.push(new Item('Sulfuras, Hand of Ragnaros', -1, 80));
-    items.push(new Item('Backstage passes to a TAFKAL80ETC concert', 15, 20));
+    items.push(new Item('Backstage passes to a TAFKAL80ETC concert', 34, 20));
     items.push(new Item('Backstage passes to a TAFKAL80ETC concert', 10, 49));
     items.push(new Item('Backstage passes to a TAFKAL80ETC concert', 5, 49));
     // this conjured item does not work properly yet
@@ -28,7 +28,7 @@
     for (var i = 0; i < days; i++) {
       showHeaderFor(i);
       showItemsFor(i);
-      update_quality();
+      items = update_quality(items);
     }
 
     function showHeaderFor(day) {
@@ -38,8 +38,8 @@
     function showItemsFor(day) {
       $('body').append('<p>name, sellIn, quality</p>');
       for (var j = 0; j < items.length; j++) {
-        var item = items[j];
-        $('body').append('<p>' + item.name + ', ' + item.sell_in + ', ' + item.quality + '</p>');
+        var item2 = items[j];
+        $('body').append('<p>' + item2.name + ', ' + item2.sell_in + ', ' + item2.quality + '</p>');
       }
       $('body').append('<br />');
     }
