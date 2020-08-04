@@ -1,4 +1,4 @@
-import { Item, update_quality } from './index'
+import { Item, update_quality } from '../index'
 
 describe('Hutber Rose', function () {
   let roseItems = []
