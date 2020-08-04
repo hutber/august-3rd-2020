@@ -47,8 +47,7 @@ describe('Hutber Rose', function () {
   it('Quality | Aged brie should increase with age', function () {
     roseItems.push(new Item('Aged Brie', 2, 0))
 
-    const expected = 2
-    update_quality(roseItems)
+    const expected = 3
     const desired = update_quality(roseItems)
 
     expect(expected).toBe(desired[0].quality)
@@ -101,8 +100,8 @@ describe('Hutber Rose', function () {
     const expected = { sell_in: -1, quality: 0 }
     update_quality(roseItems)
     const [desired] = update_quality(roseItems)
-    expect(expected.sell_in).toBe(desired.sell_in)
-    expect(expected.quality).toBe(desired.quality)
+    expect(desired.sell_in).toBe(expected.sell_in)
+    expect(desired.quality).toBe(expected.quality)
   })
 
   it('Conjured | degrade twice as fast as normal items', function () {
@@ -118,6 +117,40 @@ describe('Hutber Rose', function () {
     expected.forEach((item, index) => {
       const desired = update_quality(roseItems)
       expect(item).toEqual(desired[0])
+    })
+  })
+
+  it('Deep Test | should return the same items we put in, with all values updated', function () {
+    roseItems.push(new Item('+5 Dexterity Vest', 10, 20))
+    roseItems.push(new Item('Aged Brie', 2, 0))
+    roseItems.push(new Item('Elixir of the Mongoose', 5, 7))
+    roseItems.push(new Item('Sulfuras, Hand of Ragnaros', 0, 80))
+    roseItems.push(new Item('Sulfuras, Hand of Ragnaros', -1, 80))
+    roseItems.push(new Item('Backstage passes to a TAFKAL80ETC concert', 15, 20))
+    roseItems.push(new Item('Backstage passes to a TAFKAL80ETC concert', 10, 49))
+    roseItems.push(new Item('Backstage passes to a TAFKAL80ETC concert', 5, 49))
+    roseItems.push(new Item('Conjured Mana Cake', 3, 6))
+
+    const desired = update_quality(roseItems)
+
+    const expected = [
+      { name: '+5 Dexterity Vest', sell_in: 9, quality: 19 },
+      { name: 'Aged Brie', sell_in: 1, quality: 3 },
+      { name: 'Elixir of the Mongoose', sell_in: 4, quality: 6 },
+      { name: 'Sulfuras, Hand of Ragnaros', sell_in: 0, quality: 80 },
+      { name: 'Sulfuras, Hand of Ragnaros', sell_in: -1, quality: 80 },
+      { name: 'Backstage passes to a TAFKAL80ETC concert', sell_in: 14, quality: 21 },
+      { name: 'Backstage passes to a TAFKAL80ETC concert', sell_in: 9, quality: 50 },
+      { name: 'Backstage passes to a TAFKAL80ETC concert', sell_in: 4, quality: 50 },
+      { name: 'Conjured Mana Cake', sell_in: 2, quality: 4 },
+    ]
+
+    expect(desired.length).not.toBe(0)
+
+    desired.forEach((item, index) => {
+      expect(item.name).toBe(expected[index].name)
+      expect(item.sell_in).toBe(expected[index].sell_in)
+      expect(item.quality).toBe(expected[index].quality)
     })
   })
 })

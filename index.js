@@ -44,9 +44,10 @@ export function update_quality(items = []) {
 
   const backstageQualityCalculator = ({ sell_in, quality }) => {
     // between 10 and 5 days quality increase 2
-    if (sell_in <= BACKSTAGE_INCREASE_STANDARD_LIMIT && sell_in >= BACKSTAGE_INCREASE_EXTREME_LIMIT) quality += BACKSTAGE_INCREASE_LARGE
+    if (sell_in <= BACKSTAGE_INCREASE_STANDARD_LIMIT && sell_in >= BACKSTAGE_INCREASE_EXTREME_LIMIT && sell_in >= 0)
+      quality += BACKSTAGE_INCREASE_LARGE
     // between 5 days and lower
-    else if (sell_in <= BACKSTAGE_INCREASE_EXTREME_LIMIT && sell_in !== 0) quality += BACKSTAGE_INCREASE_EXTREME
+    else if (sell_in <= BACKSTAGE_INCREASE_EXTREME_LIMIT && sell_in !== 0 && sell_in >= 0) quality += BACKSTAGE_INCREASE_EXTREME
     // if the concert is finished
     else if (sell_in <= 0) quality = 0
     // 11+ days quality 1 increase
@@ -54,20 +55,27 @@ export function update_quality(items = []) {
     return quality
   }
 
+  const qualityValidator = (quality) => {
+    if (quality < MINIMUM_QUALITY && quality >= 0) return MINIMUM_QUALITY
+    if (quality > MAX_QUALITY && quality >= 0) return MAX_QUALITY
+    return quality
+  }
+
   const transformForMostItems = (rose) => {
     rose.sell_in -= STANDARD_DEGRADE
-    if (rose.quality < MINIMUM_QUALITY) rose.quality = MINIMUM_QUALITY
-    if (rose.quality > MAX_QUALITY) rose.quality = MAX_QUALITY
+    rose.quality = qualityValidator(rose.quality)
     return rose
   }
   const transformStandard = (rose) => {
     rose = transformForMostItems(rose)
-    rose.quality -= rose.quality < 0 ? DOUBLE_DEGRADE : STANDARD_DEGRADE
+    if (rose.quality !== 0) rose.quality -= rose.sell_in < 0 ? DOUBLE_DEGRADE : STANDARD_DEGRADE
+    // rose.sell_in -= rose.sell_in < 0 ? DOUBLE_DEGRADE : STANDARD_DEGRADE
     return rose
   }
   const transformBackstage = (rose) => {
     rose = transformForMostItems(rose)
     rose.quality = backstageQualityCalculator(rose)
+    rose.quality = qualityValidator(rose.quality)
     return rose
   }
   const transformLegendary = (rose) => {
