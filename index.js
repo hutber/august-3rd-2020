@@ -6,10 +6,15 @@ export function Item(name, sell_in, quality) {
 
 export function update_quality(items = []) {
   for (var i = 0; i < items.length; i++) {
+    // Normal degrade
     if (items[i].name !== 'Aged Brie' && items[i].name !== 'Backstage passes to a TAFKAL80ETC concert') {
       if (items[i].quality > 0) {
         if (items[i].name !== 'Sulfuras, Hand of Ragnaros') {
-          items[i].quality = items[i].quality - 1
+          if (items[i].name === 'Conjured magic staff') {
+            items[i].quality = items[i].quality - 2
+          } else {
+            items[i].quality = items[i].quality - 1
+          }
         }
       }
     } else {
