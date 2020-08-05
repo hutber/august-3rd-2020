@@ -6,7 +6,7 @@ export function Item(name, sell_in, quality) {
 
 const MAX_QUALITY = 50
 const MAX_LEGENDARY_QUALITY = 80
-const MINIMUM_QUALITY = 0
+const MINI_QUALITY = 0
 const STANDARD_DEGRADE = 1
 const DOUBLE_DEGRADE = STANDARD_DEGRADE * 2
 const BACKSTAGE_INCREASE_STANDARD = 1
@@ -37,11 +37,7 @@ const backstageQualityCalculator = ({ sell_in, quality }) => {
   return quality
 }
 
-const qualityValidator = (quality) => {
-  if (quality < MINIMUM_QUALITY && quality >= 0) return MINIMUM_QUALITY
-  if (quality > MAX_QUALITY && quality >= 0) return MAX_QUALITY
-  return quality
-}
+const qualityValidator = (quality) => Math.max(Math.min(quality, MAX_QUALITY), MINI_QUALITY)
 
 const removeADay = (rose) => {
   rose.sell_in -= STANDARD_DEGRADE
